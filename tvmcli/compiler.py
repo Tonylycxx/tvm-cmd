@@ -169,7 +169,7 @@ def compile_model(tvmcli_model: TVMCLIModel,
             raise TVMCLIException(f"load tune records failed with exception: {e}")
 
         with auto_scheduler.ApplyHistoryBest(tune_records):
-            config["relay.backend.use_autoscheduler"] = True
+            config["relay.backend.use_auto_scheduler"] = True
             with tvm.transform.PassContext(
                     opt_level=3, config=config, disabled_pass=disabled_pass
             ):
