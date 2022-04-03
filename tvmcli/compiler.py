@@ -122,7 +122,8 @@ def drive_compile(args):
                   disabled_pass=args.disabled_pass,
                   pass_context_config=args.pass_config,
                   dump_code=args.dump,
-                  additional_target_options=reconstruct_target_args(args)
+                  additional_target_options=None
+                  # additional_target_options=reconstruct_target_args(args)
                   )
 
 
@@ -157,8 +158,7 @@ def compile_model(tvmcli_model: TVMCLIModel,
 
     config = pass_config.parse_configs(pass_context_config)
 
-    # tvm_target = target_from_cli(target, additional_target_options)
-    tvm_target = target_from_cli(target, None)
+    tvm_target = target_from_cli(target, additional_target_options)
 
     if tune_records and os.path.exists(tune_records):
         logger.debug("tune records file provided: %s", tune_records)
