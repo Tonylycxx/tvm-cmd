@@ -141,7 +141,6 @@ def compile_model(tvmcli_model: TVMCLIModel,
 
     Parameters
     ----------
-    additional_target_options
     tvmcli_model
     target
     tune_records
@@ -158,7 +157,8 @@ def compile_model(tvmcli_model: TVMCLIModel,
 
     config = pass_config.parse_configs(pass_context_config)
 
-    tvm_target = target_from_cli(target, additional_target_options)
+    # tvm_target = target_from_cli(target, additional_target_options)
+    tvm_target = target_from_cli(target, None)
 
     if tune_records and os.path.exists(tune_records):
         logger.debug("tune records file provided: %s", tune_records)
