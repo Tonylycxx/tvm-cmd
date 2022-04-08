@@ -122,7 +122,8 @@ def drive_compile(args):
                   disabled_pass=args.disabled_pass,
                   pass_context_config=args.pass_config,
                   dump_code=args.dump,
-                  additional_target_options=None
+                  additional_target_options=None,
+                  opt_level=args.opt_level
                   # additional_target_options=reconstruct_target_args(args)
                   )
 
@@ -132,6 +133,7 @@ def compile_model(tvmcli_model: TVMCLIModel,
                   tune_records: Optional[str] = None,
                   package_path: Optional[str] = None,
                   dump_code: Optional[List[str]] = None,
+                  opt_level: Optional[int] = 3,
                   disabled_pass: Optional[str] = None,
                   pass_context_config: Optional[List[str]] = None,
                   additional_target_options: Optional[Dict[str, Dict[str, Any]]] = None
@@ -171,12 +173,12 @@ def compile_model(tvmcli_model: TVMCLIModel,
         with auto_scheduler.ApplyHistoryBest(tune_records):
             config["relay.backend.use_auto_scheduler"] = True
             with tvm.transform.PassContext(
-                    opt_level=3, config=config, disabled_pass=disabled_pass
+                    opt_level=opt_level, config=config, disabled_pass=disabled_pass
             ):
                 logger.debug("building relay graph with autoscheduler")
                 graph_module = relay.build(mod, target=tvm_target, params=params)
     else:
-        with tvm.transform.PassContext(opt_level=3, config=config, disabled_pass=disabled_pass):
+        with tvm.transform.PassContext(opt_level=opt_level, config=config, disabled_pass=disabled_pass):
             logger.debug("building relay graph without tuning records")
             graph_module = relay.build(mod, target=tvm_target, params=params)
 
